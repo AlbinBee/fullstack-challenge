@@ -9,7 +9,9 @@
                 </header>
                 <div class="table-title">
                     <h1 class="text-3xl">Locations</h1>
-                    <button @click="openModal" class="add-location-button">+ Add Location</button>
+                    <button @click="isModalOpen = true" class="text-sm font-bold add-location-button">
+                        + Add Location
+                    </button>
                 </div>
                 <table class="location-table">
                     <thead class="rounded-2xl">
@@ -30,8 +32,8 @@
                                     {{ location.name }}
                                 </div>
                             </td>
-                            <td class="t components: { Modal },ext-zinc-400 text-sm">{{ location.temperature }}°C</td>
-                            <td class="text-zinc-400 text-sm">{{ location.rainfall }} mm</td>
+                            <td class="text-zinc-300 text-sm">{{ location.temperature }}°C</td>
+                            <td class="text-zinc-300 text-sm">{{ location.rainfall }} mm</td>
                             <td class="flex flex-row-reverse">
                                 <img :src="images['delete']" alt="delete" class="delete-icon" />
                             </td>
@@ -66,125 +68,60 @@
                         <h1 class="text-xl">{{ currentLocation?.name }}, Country</h1>
                         <p class="mt-5 text-zinc-400 text-sm">This Week</p>
                         <div class="mt-2 weather-card-wrapper">
-                            <div class="flex items-center justify-between weather-card">
-                                <div class="flex items-center">
-                                    <img :src="images[1]" alt="weather-condition" />
-                                    <h1 class="ml-4 text-2xl font-semibold">Sunday</h1>
-                                </div>
-                                <div>
-                                    <div class="w-full mb-1 flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Min.</p>
-                                        <h5 class="text-sm ml-2">15°C</h5>
-                                    </div>
-                                    <div class="w-full flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Max.</p>
-                                        <h5 class="w-full ml-2 text-sm">18°C</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between weather-card">
-                                <div class="flex items-center">
-                                    <img :src="images[4]" alt="weather-condition" />
-                                    <h1 class="ml-4 text-2xl font-semibold">Monday</h1>
-                                </div>
-                                <div>
-                                    <div class="w-full mb-1 flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Min.</p>
-                                        <h5 class="text-sm ml-2">15°C</h5>
-                                    </div>
-                                    <div class="w-full flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Max.</p>
-                                        <h5 class="w-full ml-2 text-sm">18°C</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between weather-card">
-                                <div class="flex items-center">
-                                    <img :src="images[1]" alt="weather-condition" />
-                                    <h1 class="ml-4 text-2xl font-semibold">Tuesday</h1>
-                                </div>
-                                <div>
-                                    <div class="w-full mb-1 flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Min.</p>
-                                        <h5 class="text-sm ml-2">15°C</h5>
-                                    </div>
-                                    <div class="w-full flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Max.</p>
-                                        <h5 class="w-full ml-2 text-sm">18°C</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between weather-card">
-                                <div class="flex items-center">
-                                    <img :src="images[4]" alt="weather-condition" />
-                                    <h1 class="ml-4 text-2xl font-semibold">Wednesday</h1>
-                                </div>
-                                <div>
-                                    <div class="w-full mb-1 flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Min.</p>
-                                        <h5 class="text-sm ml-2">15°C</h5>
-                                    </div>
-                                    <div class="w-full flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Max.</p>
-                                        <h5 class="w-full ml-2 text-sm">18°C</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between weather-card">
-                                <div class="flex items-center">
-                                    <img :src="images[1]" alt="weather-condition" />
-                                    <h1 class="ml-4 text-2xl font-semibold">Thursday</h1>
-                                </div>
-                                <div>
-                                    <div class="w-full mb-1 flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Min.</p>
-                                        <h5 class="text-sm ml-2">15°C</h5>
-                                    </div>
-                                    <div class="w-full flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Max.</p>
-                                        <h5 class="w-full ml-2 text-sm">18°C</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between weather-card">
-                                <div class="flex items-center">
-                                    <img :src="images[3]" alt="weather-condition" />
-                                    <h1 class="ml-4 text-2xl font-semibold">Friday</h1>
-                                </div>
-                                <div>
-                                    <div class="w-full mb-1 flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Min.</p>
-                                        <h5 class="text-sm ml-2">15°C</h5>
-                                    </div>
-                                    <div class="w-full flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Max.</p>
-                                        <h5 class="w-full ml-2 text-sm">18°C</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between weather-card">
-                                <div class="flex items-center">
-                                    <img :src="images[1]" alt="weather-condition" />
-                                    <h1 class="ml-4 text-2xl font-semibold">Saturday</h1>
-                                </div>
-                                <div>
-                                    <div class="w-full mb-1 flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Min.</p>
-                                        <h5 class="text-sm ml-2">15°C</h5>
-                                    </div>
-                                    <div class="w-full flex items-center justify-between">
-                                        <p class="text-zinc-400 text-sm">Max.</p>
-                                        <h5 class="w-full ml-2 text-sm">18°C</h5>
-                                    </div>
-                                </div>
-                            </div>
+                            <weather-card
+                                :weatherIconUrl="images[1]"
+                                weatherDay="Sunday"
+                                :weatherMin="15"
+                                :weatherMax="18"
+                            />
+                            <weather-card
+                                :weatherIconUrl="images[4]"
+                                weatherDay="Monday"
+                                :weatherMin="15"
+                                :weatherMax="18"
+                            />
+                            <weather-card
+                                :weatherIconUrl="images[5]"
+                                weatherDay="Tuesday"
+                                :weatherMin="15"
+                                :weatherMax="18"
+                            />
+                            <weather-card
+                                :weatherIconUrl="images[4]"
+                                weatherDay="Wednesday"
+                                :weatherMin="15"
+                                :weatherMax="18"
+                            />
+                            <weather-card
+                                :weatherIconUrl="images[1]"
+                                weatherDay="Thursday"
+                                :weatherMin="15"
+                                :weatherMax="18"
+                            />
+                            <weather-card
+                                :weatherIconUrl="images[3]"
+                                weatherDay="Friday"
+                                :weatherMin="15"
+                                :weatherMax="18"
+                            />
+                            <weather-card
+                                :weatherIconUrl="images[1]"
+                                weatherDay="Saturday"
+                                :weatherMin="15"
+                                :weatherMax="18"
+                            />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <modal class="modal" /> -->
-        <location-modal />
+        <div
+            v-if="isModalOpen"
+            class="sidebar-wrapper-bg bg-black opacity-85 h-screen w-screen top-0 overflow-y-auto fixed z-[111]"
+            @click="toggleModel()"
+        />
+
+        <modal class="bg-white modal" @onToggle="toggleModel" :isModalOpen="isModalOpen" />
     </div>
 </template>
 
@@ -198,25 +135,25 @@ const glob = import.meta.glob('../assets/icons/*.svg', { eager: true });
 const images = Object.fromEntries(Object.entries(glob).map(([key, value]) => [filename(key), value.default]));
 
 const locations = [
-    { id: 1, name: 'Beijing', temperature: 13, rainfall: 0, tomorrow: 20 },
-    { id: 2, name: 'Berlin', temperature: 15, rainfall: 20, tomorrow: 20 },
-    { id: 3, name: 'Buenos Aires', temperature: 22, rainfall: 0, tomorrow: 20 },
-    { id: 4, name: 'Cairo', temperature: 24, rainfall: 3, tomorrow: 20 },
-    { id: 5, name: 'Cape Town', temperature: 24, rainfall: 0, tomorrow: 20 },
-    { id: 6, name: 'Istanbul', temperature: 12, rainfall: 0, tomorrow: 20 },
-    { id: 7, name: 'London', temperature: 14, rainfall: 20, tomorrow: 20 },
-    { id: 8, name: 'Madrid', temperature: 16, rainfall: 0, tomorrow: 20 },
+    { id: 1, name: 'Beijing', temperature: 13, rainfall: 0 },
+    { id: 2, name: 'Berlin', temperature: 15, rainfall: 20 },
+    { id: 3, name: 'Buenos Aires', temperature: 22, rainfall: 0 },
+    { id: 4, name: 'Cairo', temperature: 24, rainfall: 3 },
+    { id: 5, name: 'Cape Town', temperature: 24, rainfall: 0 },
+    { id: 6, name: 'Istanbul', temperature: 12, rainfall: 0 },
+    { id: 7, name: 'London', temperature: 14, rainfall: 20 },
+    { id: 8, name: 'Madrid', temperature: 16, rainfall: 0 },
 ];
 
 const currentLocation = ref(null);
 const isModalOpen = ref(false);
 
-const openModal = () => {
-    isModalOpen.value = true;
+const toggleModel = () => {
+    console.log('ADASDASDASD');
+    isModalOpen.value = !isModalOpen.value;
 };
 
 function toggleSlideover(location) {
-    console.log('VALUE: ', location);
     document.getElementById('slideover-container').classList.toggle('invisible');
     document.getElementById('slideover-bg').classList.toggle('opacity-0');
     document.getElementById('slideover-bg').classList.toggle('opacity-70');
@@ -348,14 +285,6 @@ function getImg(location) {
 .delete-icon:hover {
     cursor: pointer;
     opacity: 0.7;
-}
-
-.weather-card {
-    height: 80px;
-    margin-bottom: 12px;
-    background-color: #323232;
-    border-radius: 15px;
-    padding: 20px;
 }
 
 .modal {

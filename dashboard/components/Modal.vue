@@ -1,83 +1,91 @@
 <template>
-    <div id="app">
-        <div class="flex flex-col items-center justify-center p-3 min-h-full">
-            <button
-                @click="onToggle"
-                class="bg-black border border-purple-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-purple-600"
-            >
-                Open
-            </button>
-        </div>
-        <transition name="fade">
-            <div v-if="isModalVisible">
-                <div @click="onToggle" class="absolute bg-black opacity-99 inset-0 z-0"></div>
-                <div class="w-full max-w-lg p-3 relative mx-auto my-auto rounded-xl shadow-lg">
+    <div v-if="isModalVisible" class="modal-wrapper p-3">
+        <!-- <div class="modal-wrapper p-3"> -->
+        <div @click="$emit('onToggle')" class="flex absolute inset-0 z-0" />
+        <div class="w-full max-w-lg p-3 relative mx-auto my-auto rounded-xl">
+            <div>
+                <div class="flex justify-between items-center modal-header">
                     <div>
-                        <div class="text-center p-3 flex-auto justify-center leading-6">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="w-16 h-16 flex items-center text-purple-500 mx-auto"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                    clip-rule="evenodd"
-                                />
-                            </svg>
-                            <h2 class="text-2xl font-bold py-4">Are you sure?</h2>
-                            <p class="text-md text-gray-500 px-8">Do you really want to delete this location?</p>
-                        </div>
-                        <div class="p-3 mt-2 text-center space-x-4 md:block">
-                            <button
-                                class="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-md hover:shadow-lg hover:bg-gray-100"
-                            >
-                                Delete
-                            </button>
-                            <button
-                                @click="onToggle"
-                                class="mb-2 md:mb-0 bg-black border border-purple-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-purple-600"
-                            >
-                                Close
-                            </button>
-                        </div>
+                        <h1 class="font-semibold text-2xl">Add Location</h1>
+                    </div>
+                    <div class="flex flex-row-reverse close-icon-wrapper">
+                        <svg
+                            @click="$emit('onToggle')"
+                            class="w-6 h-6 close-icon"
+                            stroke="currentColor"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                     </div>
                 </div>
+                <div class="mt-5 min-w-80 input-wrapper">
+                    <custom-input @input-changed="handleChange" :selected="selected" />
+                </div>
+                <div class="text-center space-x-4 md:block">
+                    <button @click="addLocation" class="w-full mb-2 text-sm font-bold remove-location-button">
+                        Add Location
+                    </button>
+                </div>
             </div>
-        </transition>
+        </div>
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            isOpen: true,
-        };
-    },
+<script setup>
+import { computed, defineProps } from 'vue';
 
-    computed: {
-        isModalVisible() {
-            return this.isOpen;
-        },
-    },
+const emit = defineEmits(['onToggle']);
+const selected = ref(null);
+const props = defineProps({
+    isModalOpen: Boolean,
+});
 
-    methods: {
-        onToggle() {
-            this.isOpen = !this.isOpen;
-        },
-    },
+const isModalVisible = computed(() => {
+    return props.isModalOpen;
+});
+
+const addLocation = () => {
+    if (selected.value != null) {
+        alert(`added location: ${selected.value.name}`);
+        emit('onToggle');
+    } else {
+        alert('Please choose a location!');
+    }
+};
+
+const handleChange = (newValue) => {
+    selected.value = newValue;
 };
 </script>
-<style>
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
+
+<style scoped>
+.modal-wrapper {
+    border-radius: 10px;
+    background-color: #1b1b1d;
+}
+.remove-location-button {
+    background-color: #d4e8f8;
+    color: #111015;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 500ms ease-out;
+.remove-location-button:hover {
+    background-color: #a7d0f1;
+}
+
+.close-icon-wrapper {
+    border-radius: 5px;
+    padding: 3px;
+    background-color: #252528;
+}
+
+.close-icon:hover {
+    cursor: pointer;
+    opacity: 0.8;
 }
 </style>
