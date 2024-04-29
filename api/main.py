@@ -8,7 +8,9 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from models.Country import Country
 from models.Location import Location
+from models.CreateLocationModel import CreateLocationModel
 from schemas.CountrySchema import CountrySchema
+from schemas.LocationSchema import LocationSchema
 
 from bs4 import BeautifulSoup
 from typing import List
@@ -20,8 +22,15 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-app = FastAPI()
+class Location(Base):
+    __tablename__ = "locations"
 
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    latitude = Column(String)
+    longitude = Column(String)
+
+app = FastAPI()
 
 def fetch_countries_data():
     url = "https://gist.githubusercontent.com/ofou/df09a6834a8421b4f376c875194915c9/raw/"
@@ -38,7 +47,7 @@ def fetch_countries_data():
     for line in data_lines[1:]:
         parts = line.split(",")
         if len(parts) != 6:
-            continue  # Skip invalid data
+            continue
 
         country_data = {
             "id": id_counter,
@@ -78,9 +87,7 @@ def get_db():
 def initialize_database():
     Base.metadata.create_all(bind=engine)
 
-    # Use get_db to obtain a database session
     with get_db() as session:
-        # Check if countries table is empty
         if not session.query(Country).count():
             countries_data = fetch_countries_data()
             if countries_data:
@@ -94,27 +101,27 @@ def initialize_database():
         else:
             print("Countries table already contains data.")
 
-
-# Call initialize_database function when the application starts
 initialize_database()
 
 # API endpoints
-
-@app.get("/countries", response_model=List[dict])
-async def get_countries_data():
-    try:
-        countries_data = fetch_countries_data()
-        return countries_data
-    except Exception as e:
-        return {"error": str(e)}
-
 @app.post("/locations")
-async def create_location(name: str, latitude: str, longitude: str, db: Session = Depends(get_db)):
-    db_location = Location(name=name, latitude=latitude, longitude=longitude)
-    db.add(db_location)
-    db.commit()
-    db.refresh(db_location)
+async def create_location(location_data: CreateLocationModel, db: Session = Depends(get_db)):
+    with db as session:
+        existing_location = session.query(Location).filter(Location.name == location_data.name).first()
+        if existing_location:
+            raise HTTPException(status_code=400, detail="Location with this name already exists")
+
+        db_location = Location(name=location_data.name, latitude=location_data.latitude, longitude=location_data.longitude)
+        session.add(db_location)  
+        session.commit() 
+        session.refresh(db_location)  
     return db_location
+
+@app.get("/locations", response_model=list[LocationSchema])
+async def get_locations(db: Session = Depends(get_db)):
+    with db as session:
+        locations = session.query(Location).all()
+        return locations
 
 @app.get("/locations/{location_id}")
 async def get_location(location_id: int, db: Session = Depends(get_db)):
@@ -123,6 +130,27 @@ async def get_location(location_id: int, db: Session = Depends(get_db)):
         if not location:
             raise HTTPException(status_code=404, detail="Location not found")
     return location
+
+@app.delete("/locations/{name}")
+async def delete_location_by_name(name: str, db: Session = Depends(get_db)):
+    with db as session:
+        location = session.query(Location).filter(Location.name == name).first()
+
+        if location is None:
+            raise HTTPException(status_code=404, detail="Location not found")
+
+        session.delete(location)
+        session.commit()
+
+    return {"message": f"Location '{name}' deleted successfully"}
+
+@app.get("/countries", response_model=List[dict])
+async def get_countries_data():
+    try:
+        countries_data = fetch_countries_data()
+        return countries_data
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.get("/countries-db", response_model=list[CountrySchema])
 async def get_countries_from_db(db: Session = Depends(get_db)):
