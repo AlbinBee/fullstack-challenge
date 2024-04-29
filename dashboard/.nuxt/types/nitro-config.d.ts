@@ -3,7 +3,7 @@
 // App Config
 import type { Defu } from 'defu'
 
-import type { default as appConfig0 } from "C:/Users/bini_/OneDrive/Desktop/Projects/full-stack-challenge/dashboard/app.config";
+import type { default as appConfig0 } from "/Users/icesoftware/Desktop/Projects/fullstack-challenge/dashboard/app.config";
 
 type UserAppConfig = Defu<{}, [typeof appConfig0]>
 

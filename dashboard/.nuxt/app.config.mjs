@@ -40,6 +40,6 @@ if (import.meta.hot) {
   })
 }
 
-import cfg0 from "C:/Users/bini_/OneDrive/Desktop/Projects/full-stack-challenge/dashboard/app.config.ts"
+import cfg0 from "/Users/icesoftware/Desktop/Projects/fullstack-challenge/dashboard/app.config.ts"
 
 export default /*@__PURE__*/ defuFn(cfg0, inlineConfig)

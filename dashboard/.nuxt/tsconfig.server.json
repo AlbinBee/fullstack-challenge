@@ -71,6 +71,9 @@
       ],
       "#tailwind-config/*": [
         "./tailwind.config/*"
+      ],
+      "pinia": [
+        "../node_modules/pinia/dist/pinia"
       ]
     }
   },
@@ -80,6 +83,7 @@
     "../node_modules/@nuxtjs/color-mode/runtime/server",
     "../node_modules/@nuxtjs/tailwindcss/runtime/server",
     "../node_modules/@nuxt/ui/runtime/server",
+    "../node_modules/@pinia/nuxt/runtime/server",
     "../node_modules/@nuxt/devtools/runtime/server",
     "../node_modules/@nuxt/telemetry/runtime/server",
     "./types/nitro.d.ts",

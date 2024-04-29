@@ -1,7 +1,7 @@
 
 import type { CustomAppConfig } from 'nuxt/schema'
 import type { Defu } from 'defu'
-import cfg0 from "C:/Users/bini_/OneDrive/Desktop/Projects/full-stack-challenge/dashboard/app.config"
+import cfg0 from "/Users/icesoftware/Desktop/Projects/fullstack-challenge/dashboard/app.config"
 
 declare const inlineConfig = {
   "nuxt": {

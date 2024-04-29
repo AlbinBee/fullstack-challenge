@@ -8,6 +8,7 @@ type InjectionType<A extends Plugin> = IsAny<A> extends true ? unknown : A exten
 
 type NuxtAppInjections = 
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/check-outdated-build.client").default> &
+  InjectionType<typeof import("../../node_modules/@pinia/nuxt/dist/runtime/plugin.vue3").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/revive-payload.server").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/revive-payload.client").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/head/runtime/plugins/unhead").default> &
@@ -21,7 +22,8 @@ type NuxtAppInjections =
   InjectionType<typeof import("../../node_modules/@nuxtjs/color-mode/dist/runtime/plugin.server").default> &
   InjectionType<typeof import("../../node_modules/@nuxtjs/color-mode/dist/runtime/plugin.client").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/chunk-reload.client").default> &
-  InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/check-if-layout-used").default>
+  InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/check-if-layout-used").default> &
+  InjectionType<typeof import("../../plugins/pinia").default>
 
 declare module '#app' {
   interface NuxtApp extends NuxtAppInjections { }

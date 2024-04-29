@@ -8,5 +8,8 @@ export default defineNuxtConfig({
     ssr: false,
     devtools: { enabled: true },
     pages: true,
-    modules: ['@nuxt/ui'],
+    modules: ['@nuxt/ui', '@pinia/nuxt'],
+    pinia: {
+        storesDirs: ['./stores/**'],
+    },
 });
