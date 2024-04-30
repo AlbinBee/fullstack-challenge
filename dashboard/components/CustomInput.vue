@@ -11,7 +11,13 @@
                     <path stroke="currentColor" stroke-width="1.5" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                 </svg>
             </div>
-            <v-select :options="locations" label="name" v-model="selected" placeholder="Search..." @input="doSom" />
+            <v-select
+                :options="countries"
+                label="country"
+                v-model="selected"
+                placeholder="Search..."
+                @input="inputChanged"
+            />
         </div>
     </form>
 </template>
@@ -19,14 +25,15 @@
 <script setup>
 import 'vue-select/dist/vue-select.css';
 import vSelect from 'vue-select';
-
-import { ref, defineEmits, watch } from 'vue';
+import { ref, defineEmits, watch, computed } from 'vue';
+import { useStore } from '@/store';
 
 const selected = ref(null);
+const counterStore = useStore();
 
 const emit = defineEmits(['input-changed']);
 
-const doSom = () => {
+const inputChanged = () => {
     emit('input-changed', selected.value);
 };
 
@@ -34,21 +41,11 @@ watch(selected, (newValue) => {
     emit('input-changed', newValue);
 });
 
-const locations = [
-    { id: 1, name: 'Beijing', temperature: 13, rainfall: 0 },
-    { id: 2, name: 'Berlin', temperature: 15, rainfall: 20 },
-    { id: 3, name: 'Buenos Aires', temperature: 22, rainfall: 0 },
-    { id: 4, name: 'Cairo', temperature: 24, rainfall: 3 },
-    { id: 5, name: 'Cape Town', temperature: 24, rainfall: 0 },
-    { id: 6, name: 'Istanbul', temperature: 12, rainfall: 0 },
-    { id: 7, name: 'London', temperature: 14, rainfall: 20 },
-    { id: 8, name: 'Madrid', temperature: 16, rainfall: 0 },
-];
+const countries = computed(() => counterStore.countries);
 </script>
 
 <style scoped>
 .custom-input {
-    border: none;
     background-color: #313030;
 }
 :deep(.vs__search::placeholder) {

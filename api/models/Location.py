@@ -8,5 +8,6 @@ class Location(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
+    capital = Column(String)
     latitude = Column(String)
     longitude = Column(String)

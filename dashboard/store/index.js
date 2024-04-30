@@ -1,25 +1,58 @@
 import { defineStore } from 'pinia';
+import axios from 'axios';
 
-export const useCounterStore = defineStore({
+export const useStore = defineStore({
     id: 'counterStore',
     state: () => ({
-        // State properties goes here
         count: 0,
+        countries: [],
+        locations: [],
+        loading: false,
     }),
-    getters: {
-        // Getters goes here
-    },
+    getters: {},
     actions: {
-        // Actions goes here
-        increment() {
-            console.log('INCREASING, COUNT BEFORE: ', this.count);
-            this.count.s++;
-            console.log('COUNT AFTER: ', this.count);
+        async fetchCountries() {
+            this.loading = true;
+            await axios
+                .get('/countries')
+                .then((res) => {
+                    this.countries = res.data;
+                })
+                .catch((err) => {
+                    console.log('err: ', err);
+                })
+                .finally(() => (this.loading = false));
         },
-        decrement() {
-            console.log('DECREASING, COUNT BEFORE: ', this.count);
-            this.count.s--;
-            console.log('COUNT AFTER: ', this.count);
+
+        async fetchLocations() {
+            await axios
+                .get('/locations')
+                .then((res) => {
+                    this.locations = res.data;
+                })
+                .catch((err) => {
+                    console.log('err: ', err);
+                });
+        },
+        async addLocation(query) {
+            await axios
+                .post('/locations', query)
+                .then(() => {
+                    this.fetchLocations();
+                })
+                .catch((err) => {
+                    console.log('err: ', err);
+                });
+        },
+        async removeLocation(country) {
+            await axios
+                .delete(`locations/${country}`)
+                .then((res) => {
+                    this.fetchLocations();
+                })
+                .catch((err) => {
+                    console.log('err: ', err);
+                });
         },
     },
 });

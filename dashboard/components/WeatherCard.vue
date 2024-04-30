@@ -9,9 +9,13 @@
                 <p class="text-zinc-400 text-sm">Min.</p>
                 <h5 class="text-sm ml-2">{{ props.weatherMin }}°C</h5>
             </div>
-            <div class="w-full flex items-center justify-between">
+            <div class="w-full mb-1 flex items-center justify-between">
                 <p class="text-zinc-400 text-sm">Max.</p>
                 <h5 class="w-full ml-2 text-sm">{{ props.weatherMax }}°C</h5>
+            </div>
+            <div class="w-full flex items-center justify-between">
+                <p class="text-zinc-400 text-sm">Rain</p>
+                <h5 class="w-full ml-2 text-sm">{{ props.rain }}mm</h5>
             </div>
         </div>
     </div>
@@ -26,6 +30,7 @@ const props = defineProps({
     weatherDay: String,
     weatherMin: Number,
     weatherMax: Number,
+    rain: Number,
 });
 </script>
 

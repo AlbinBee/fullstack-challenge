@@ -1,6 +1,5 @@
 <template>
-    <div v-if="isModalVisible" class="modal-wrapper p-3">
-        <!-- <div class="modal-wrapper p-3"> -->
+    <div class="modal-wrapper p-3 rounded-xl">
         <div @click="$emit('onToggle')" class="flex absolute inset-0 z-0" />
         <div class="w-full max-w-lg p-3 relative mx-auto my-auto rounded-xl">
             <div>
@@ -8,7 +7,7 @@
                     <div>
                         <h1 class="font-semibold text-2xl">Add Location</h1>
                     </div>
-                    <div class="flex flex-row-reverse close-icon-wrapper">
+                    <div class="flex flex-row-reverse p-1 close-icon-wrapper rounded-lg">
                         <svg
                             @click="$emit('onToggle')"
                             class="w-6 h-6 close-icon"
@@ -23,7 +22,10 @@
                     <custom-input @input-changed="handleChange" :selected="selected" />
                 </div>
                 <div class="text-center space-x-4 md:block">
-                    <button @click="addLocation" class="w-full mb-2 text-sm font-bold remove-location-button">
+                    <button
+                        @click="addLocation"
+                        class="w-full mb-2 text-sm text-background font-bold add-location-button rounded-lg"
+                    >
                         Add Location
                     </button>
                 </div>
@@ -33,54 +35,53 @@
 </template>
 
 <script setup>
-import { computed, defineProps } from 'vue';
+import { useStore } from '@/store';
 
 const emit = defineEmits(['onToggle']);
 const selected = ref(null);
-const props = defineProps({
-    isModalOpen: Boolean,
-});
 
-const isModalVisible = computed(() => {
-    return props.isModalOpen;
-});
-
-const addLocation = () => {
-    if (selected.value != null) {
-        alert(`added location: ${selected.value.name}`);
-        emit('onToggle');
-    } else {
-        alert('Please choose a location!');
-    }
-};
+const mainStore = useStore();
 
 const handleChange = (newValue) => {
     selected.value = newValue;
+};
+
+const addLocation = () => {
+    if (selected.value != null) {
+        const request = {
+            name: selected.value.country,
+            capital: selected.value.capital,
+            latitude: selected.value.latitude,
+            longitude: selected.value.longitude,
+        };
+
+        //TODO: Handle errors to display from a toast
+        mainStore.addLocation(request);
+
+        emit('onToggle');
+        selected.value = null;
+    } else {
+        alert('Please choose a location!');
+    }
 };
 </script>
 
 <style scoped>
 .modal-wrapper {
-    border-radius: 10px;
     background-color: #1b1b1d;
 }
-.remove-location-button {
+.add-location-button {
     background-color: #d4e8f8;
-    color: #111015;
-    border: none;
+    /* color: #111015; */
     padding: 10px 20px;
-    border-radius: 7px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
-.remove-location-button:hover {
+text-background .add-location-button:hover {
     background-color: #a7d0f1;
 }
 
 .close-icon-wrapper {
-    border-radius: 5px;
-    padding: 3px;
     background-color: #252528;
 }
 

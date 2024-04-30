@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@nuxt/ui": "^2.14.1",
+    "@nuxtjs/axios": "^5.13.6",
     "@pinia/nuxt": "^0.5.1",
     "@vueuse/core": "^10.9.0",
+    "axios": "^1.6.8",
     "flowbite": "^2.3.0",
     "lodash": "^4.17.21",
     "nuxt": "^3.10.3",
