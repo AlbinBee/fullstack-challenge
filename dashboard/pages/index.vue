@@ -80,7 +80,7 @@
                 <div
                     id="slideover"
                     :class="{ 'translate-x-full': !isSlideoverVisible }"
-                    class="bg-white w-96 h-full absolute right-0 duration-300 ease-out transition-all sidebar-content"
+                    class="w-96 h-full absolute right-0 duration-300 ease-out transition-all sidebar-content"
                 >
                     <div class="mt-2 p-5">
                         <div @click="toggleSlideover" class="absolute cursor-pointer right-0 mr-5">
@@ -229,7 +229,7 @@ const getImageIdFromWmoCode = (wmoCode) => {
 </script>
 <style scoped>
 #slideover {
-    /* background-color: #1b1b1d; */
+    background-color: #1b1b1d;
 }
 
 .weather-app {
