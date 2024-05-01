@@ -36,6 +36,7 @@
 
 <script setup>
 import { useStore } from '@/store';
+import { showToast } from '@/services/ToastService.js';
 
 const emit = defineEmits(['onToggle']);
 const selected = ref(null);
@@ -55,13 +56,19 @@ const addLocation = () => {
             longitude: selected.value.longitude,
         };
 
-        //TODO: Handle errors to display from a toast
-        mainStore.addLocation(request);
+        mainStore
+            .addLocation(request)
+            .then(() => {
+                showToast('Successfully added location', 'success');
+            })
+            .catch((err) => {
+                showToast(`Failed adding location: ${err}`, 'danger');
+            });
 
         emit('onToggle');
         selected.value = null;
     } else {
-        alert('Please choose a location!');
+        showToast('Please choose a location', 'danger');
     }
 };
 </script>

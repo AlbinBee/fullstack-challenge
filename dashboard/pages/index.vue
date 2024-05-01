@@ -115,7 +115,6 @@
             </div>
         </transition>
         <!-- End of Sidebar -->
-
         <!-- Start of Backdrop -->
         <transition name="fade">
             <div
@@ -138,6 +137,11 @@
             />
         </transition>
         <!-- End of Modals -->
+        <!-- Start of Toaster -->
+        <transition name="slide">
+            <toast :title="toastTitle" :type="toastType" :visible="toastVisible" @onClose="closeToast" />
+        </transition>
+        <!-- End of Toaster -->
     </div>
 </template>
 
@@ -148,9 +152,10 @@ import { useStore } from '@/store';
 import Modal from '@/components/Modal.vue';
 import Loader from '@/components/Loader.vue';
 import DeleteModal from '@/components/DeleteModal.vue';
+import { toastVisible, toastTitle, toastType, showToast } from '@/services/ToastService.js';
 
 const mainStore = useStore();
-const loading = computed(() => mainStore.loading);
+const loading = computed(() => mainStore.loadingCountries || mainStore.loadingLocations);
 const locations = computed(() => mainStore.locations);
 
 const isSlideoverVisible = ref(false);
@@ -179,7 +184,14 @@ const toggleRemoveModal = (location) => {
 };
 
 const removeLocation = () => {
-    mainStore.removeLocation(currentLocation.value.name);
+    mainStore
+        .removeLocation(currentLocation.value.name)
+        .then(() => {
+            showToast('Successfully removed location', 'success');
+        })
+        .catch((err) => {
+            showToast(`Failed removing location: ${err}`, 'danger');
+        });
     closeModals();
 };
 
@@ -197,6 +209,10 @@ const getDayName = (dateString) => {
     const dayIndex = date.getDay();
 
     return daysOfWeek[dayIndex];
+};
+
+const closeToast = () => {
+    toastVisible.value = false;
 };
 
 const toggleSlideover = (location) => {

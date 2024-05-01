@@ -15,7 +15,7 @@ class DailyData(BaseModel):
     temperature_2m_min: List[float]
     rain_sum: List[float]
 
-class LocationData(BaseModel):
+class LocationSchema(BaseModel):
     name: str
     capital: str
     latitude: float
@@ -23,6 +23,3 @@ class LocationData(BaseModel):
     timezone: str
     current: CurrentData
     daily: DailyData
-
-class LocationResponse(BaseModel):
-    locations: List[LocationData]

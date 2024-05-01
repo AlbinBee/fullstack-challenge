@@ -7,12 +7,13 @@ export const useStore = defineStore({
         count: 0,
         countries: [],
         locations: [],
-        loading: false,
+        loadingCountries: false,
+        loadingLocations: false,
     }),
     getters: {},
     actions: {
         async fetchCountries() {
-            this.loading = true;
+            this.loadingCountries = true;
             await axios
                 .get('/countries')
                 .then((res) => {
@@ -21,10 +22,10 @@ export const useStore = defineStore({
                 .catch((err) => {
                     console.log('err: ', err);
                 })
-                .finally(() => (this.loading = false));
+                .finally(() => (this.loadingCountries = false));
         },
-
         async fetchLocations() {
+            this.loadingLocations = true;
             await axios
                 .get('/locations')
                 .then((res) => {
@@ -32,7 +33,8 @@ export const useStore = defineStore({
                 })
                 .catch((err) => {
                     console.log('err: ', err);
-                });
+                })
+                .finally(() => (this.loadingLocations = false));
         },
         async addLocation(query) {
             await axios
@@ -42,16 +44,18 @@ export const useStore = defineStore({
                 })
                 .catch((err) => {
                     console.log('err: ', err);
+                    throw err?.response?.data?.detail;
                 });
         },
         async removeLocation(country) {
             await axios
                 .delete(`locations/${country}`)
-                .then((res) => {
+                .then(() => {
                     this.fetchLocations();
                 })
                 .catch((err) => {
                     console.log('err: ', err);
+                    throw err?.response?.data?.detail || 'Could not delete location';
                 });
         },
     },
